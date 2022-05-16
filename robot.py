@@ -34,13 +34,13 @@ class Robot(wpilib.TimedRobot):
 
         self.wheel_diameter = 4  # inches
         self.wheel_circumference = self.wheel_diameter * math.pi
-        self.leg_1_distance = (84)
+        self.leg_1_distance = 84
         self.leg_1_clicks = (self.leg_1_distance / self.wheel_circumference) * 360
         self.drivetrain.set(self.leg_1_clicks, self.leg_1_clicks)
 
     def autonomousPeriodic(self):
         self.velocity = self.controller.calculate(measurement=self.drivetrain.m_left_encoder.getPosition())
-        self.velocity = min(0.4, max(-.4, self.velocity))
+        # self.velocity = min(0.4, max(-.4, self.velocity))
         self.drivetrain.set(self.velocity, self.velocity)
 
 if __name__ == "__main__":
