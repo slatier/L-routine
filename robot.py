@@ -3,7 +3,6 @@ import math
 from wpimath.controller import PIDController
 from drivetrain import Drivetrain
 
-
 class Robot(wpilib.TimedRobot):
     
     joy1=Joystick(0)
@@ -16,7 +15,8 @@ class Robot(wpilib.TimedRobot):
         self.drivetrain.m_left_encoder.setPosition(0)
         self.drivetrain.m_right_encoder.setPosition(0)
 
-        self.turn_controller = PIDController(P, I, D)
+        self.controller = PIDController(P, I, D)
+        self.controller.setTolerance(15)
 
     def robotPeriodic(self):
         pass
@@ -31,19 +31,15 @@ class Robot(wpilib.TimedRobot):
         self.drivetrain.set(speed+turn, speed-turn)
 
     def autonomousInit(self):
-        wheel_diameter = 4  # inches
-        wheel_circumference = wheel_diameter * math.pi
-        leg_1_distance = (84)
-        leg_1_clicks = (leg_1_distance / wheel_circumference) * 360
-        self.drivetrain.set(leg_1_clicks, leg_1_clicks)
-        # self.drivetrain.gyro.setYaw(O)
-        # self.drivetrain.m_right_encoder(0)
-
+        self.wheel_diameter = 4  # inches
+        self.wheel_circumference = self.wheel_diameter * math.pi
+        self.leg_1_distance = (84)
+        self.leg_1_clicks = (self.leg_1_distance / self.wheel_circumference) * 360
+        self.drivetrain.set(self.leg_1_clicks, self.leg_1_clicks)
 
     def autonomousPeriodic(self):
-        self.turn_controller.setSetpoint(90)
-        turn_clicks = self.turn_controller.calculate(measurement=self.drivetrain.gyro.setYaw())
-        self.drivetrain.set(-turn_clicks, turn_clicks)
+        self.velocity = self.controller.calculate(measurement=self.drivetrain.m_left_encoder.getPosition())
+        self.drivetrain.set(self.velocity, self.velocity)
 
 if __name__ == "__main__":
     wpilib.run(Robot)
