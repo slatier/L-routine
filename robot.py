@@ -13,9 +13,6 @@ class Robot(wpilib.TimedRobot):
         self.drivetrain = Drivetrain()
 
     def robotInit(self):
-        self.drivetrain.m_left_encoder.setPosition(0)
-        self.drivetrain.m_right_encoder.setPosition(0)
-
         self.controller = PIDController(0.003, 0, 0)
         self.controller.setTolerance(15)
 
@@ -32,6 +29,9 @@ class Robot(wpilib.TimedRobot):
         self.drivetrain.set(speed+turn, speed-turn)
 
     def autonomousInit(self):
+        self.drivetrain.m_left_encoder.setPosition(0)
+        self.drivetrain.m_right_encoder.setPosition(0)
+
         self.wheel_diameter = 4  # inches
         self.wheel_circumference = self.wheel_diameter * math.pi
         self.leg_1_distance = (84)
