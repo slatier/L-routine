@@ -2,6 +2,7 @@ from wpilib import run, TimedRobot, Joystick
 import math
 from wpimath.controller import PIDController
 from drivetrain import Drivetrain
+import wpilib
 
 class Robot(wpilib.TimedRobot):
     
@@ -15,7 +16,7 @@ class Robot(wpilib.TimedRobot):
         self.drivetrain.m_left_encoder.setPosition(0)
         self.drivetrain.m_right_encoder.setPosition(0)
 
-        self.controller = PIDController(P, I, D)
+        self.controller = PIDController(0.003, 0, 0)
         self.controller.setTolerance(15)
 
     def robotPeriodic(self):
